@@ -1,6 +1,6 @@
 #### 사용 라이브러리
 
-`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`
+`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`, `axios`
 
 ---
 
@@ -61,3 +61,4 @@ const sampleThunk = () => (dispatch, getState) => {
 ##### Thunk 생성 함수 만들기
 
 - 액션 생성 함수에서 일반 액션 객체를 반환하는 대신에 함수를 반환
+- 기본, 성공, 실패 액션을 만들어서 설정
