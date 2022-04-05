@@ -1,20 +1,28 @@
+import { async } from 'q';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Sample from '../components/Sample';
-import { getPost, getUser } from '../modules/sample';
+import { getPost, getUsers } from '../modules/sample';
 
 const SampleContainer = ({
   getPost,
-  getUser,
+  getUsers,
   post,
   users,
   loadingPost,
   loadingUsers,
 }) => {
   useEffect(() => {
-    getPost(1);
-    getUser(1);
-  }, [getPost, getUser]);
+    const fn = async () => {
+      try {
+        getPost(1);
+        getUsers();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fn();
+  }, [getPost, getUsers]);
 
   return (
     <Sample
@@ -27,14 +35,14 @@ const SampleContainer = ({
 };
 
 export default connect(
-  ({ sample }) => ({
+  ({ sample, loading }) => ({
     post: sample.post,
     users: sample.users,
-    loadingPost: sample.loading.GET_POST,
-    loadingUsers: sample.loading.GET_USERS,
+    loadingPost: loading['sample/GET_POST'],
+    loadingUsers: loading['sample/GET_USERS'],
   }),
   {
     getPost,
-    getUser,
+    getUsers,
   }
 )(SampleContainer);
