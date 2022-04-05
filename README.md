@@ -1,6 +1,6 @@
 #### 사용 라이브러리
 
-`react`,`redux`, `react-redux`, `redux-actions`
+`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`
 
 ---
 
@@ -28,3 +28,10 @@ export default loggerMiddleware;
   - 만약 그 다음 미들웨어가 없다면 리듀서에게 액션을 넘겨줌
   - 미들웨어에서 next를 사용하지 않으면 액션이 리듀서에 전달되지 않음
 - 미들웨어는 스토어를 생성하는 과정에서 적용
+
+### 만들어져 있는 미들웨어 사용해보기
+
+#### redux-logger 사용하기
+
+- `npm i redux-logger`
+- 스토어를 생성하는 과정에 logger를 만들고 applyMiddleware함수의 파라미터로 전달
