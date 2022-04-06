@@ -1,4 +1,3 @@
-import { async } from 'q';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Sample from '../components/Sample';
