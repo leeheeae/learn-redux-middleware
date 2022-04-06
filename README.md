@@ -1,6 +1,6 @@
 #### 사용 라이브러리
 
-`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`, `axios`
+`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`, `axios`, `redux-saga`
 
 ---
 
@@ -62,3 +62,77 @@ const sampleThunk = () => (dispatch, getState) => {
 
 - 액션 생성 함수에서 일반 액션 객체를 반환하는 대신에 함수를 반환
 - 기본, 성공, 실패 액션을 만들어서 설정
+
+#### redux-saga
+
+##### redux-saga를 이용하는 것이 유리한 상황
+
+- 기존 요청을 취소 처리해야 할 때 (불필요한 중복 요청 방지)
+- 특정 액션이 발생했을 때 다른 액션을 발생시키거나, API 요청 등 리덕스와 관계없는 코드를 실행할 때
+- 웹소켓을 사용할 때
+- API 요청 실패 시 재요청해야 할 때
+
+##### 제너레이터 함수
+
+```javascript
+function* generatorFunction() {
+  console.log('콘솔1');
+  yield 1;
+  console.log('콘솔2');
+  yield 2;
+  console.log('콘솔3');
+  yield 3;
+  return 4;
+}
+```
+
+- 제너레이터 함수를 만들 때는 function\* 키워드를 사용
+- 함수를 작성한 뒤에는 다음 코드를 사용해 제너레이터를 생성
+  - `const generator = generatorFunction()`
+- 제너레이터 함수를 호출 했을 때 반환되는 객체를 제너레이터라고 부름
+
+```javascript
+generator.next();
+//콘솔1
+//1
+generator.next();
+//콘솔2
+//2
+generator.next();
+//콘솔3
+//3
+generator.next();
+//4
+generator.next();
+//undefined
+```
+
+- 제너레이터가 처음 만들어지면 함수의 흐름은 멈춰있는 상태
+- next()가 호출되면 다음 yield가 있는 곳까지 호출하고 다시 함수가 멈춤
+- 제너레이터 함수를 사용하면 함수를 도중에 멈출 수 있고, 순차적으로 여러 값을 반환시킬 수 있음
+- next 함수에 파라미터를 넣으면 제너레이터 함수에서 yield를 사용하여 해당값을 조회할 수 있음
+
+```javascript
+function* sumGenerator() {
+  console.log('sumGenerator가 만들어졌습니다.');
+  let a = yield;
+  let b = yield;
+  yield a + b;
+}
+
+const sum = sumGenerator();
+sum.next();
+//sumGenerator가 만들어졌습니다.
+//undefined
+sum.next(1);
+//undefined
+sum.next(2);
+//3
+sum.next();
+//undefined
+```
+
+##### redux-saga는?
+
+- 제너레이터 함수 문법을 기반으로 비동기 작업을 관리해줌
+- redux-saga는 디스패치하는 액션을 모니터링해서 그에 따라 필요한 작업을 따로 수행할 수 있는 미들웨어
