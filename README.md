@@ -1,6 +1,6 @@
 #### 사용 라이브러리
 
-`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`, `axios`, `redux-saga`
+`react`,`redux`, `react-redux`, `redux-actions`, `redux-logger`, `redux-thunk`, `axios`, `redux-saga`, `redux-devtools-extension`
 
 ---
 
@@ -136,3 +136,15 @@ sum.next();
 
 - 제너레이터 함수 문법을 기반으로 비동기 작업을 관리해줌
 - redux-saga는 디스패치하는 액션을 모니터링해서 그에 따라 필요한 작업을 따로 수행할 수 있는 미들웨어
+
+##### 비동기 카운터 만들기
+
+- INCREASE_ASYNC, DECREASE_ASYNC라는 액션 타입을 선언, 해당 액션에 대한 액션 생성 함수도 생성
+  - 액션 생성함수는 마우스 클릭 이벤트가 payload에 들어가지 않도록 하기 위해 () => undefined를 두 번째 파라미터로 넣어줌
+- 그 다음 제너레이터 함수를 만듬 (Saga)
+  - `yield delay(1000)`를 이용해 딜레이 설정
+  - `yield put(액션타입())`를 이용해 특정 액션을 디스패치
+  - `takeEvery(사가액션타입, 사가함수);`들어오는 모든 액션에 대해 특정 작업을 처리
+  - `takeLatest(사가액션타입, 사가함수);`기존에 진행 중이던 작업이 있다면 취소 처리하고 가장 마지막으로 실행된 작업만 수행
+- 루트 사가를 만듬
+  - 추후 다른 리듀서에서도 사가를 만들어 등록할 것이기 때문
